@@ -8,8 +8,9 @@ export default async function handler(req, res) {
   }
 
   const appsScriptUrl = process.env.APPS_SCRIPT_URL;
-  if (!appsScriptUrl) {
-    res.status(500).json({ ok: false, error: "Falta configurar APPS_SCRIPT_URL en el servidor" });
+  const appsScriptToken = process.env.APPS_SCRIPT_TOKEN;
+  if (!appsScriptUrl || !appsScriptToken) {
+    res.status(500).json({ ok: false, error: "Falta configurar APPS_SCRIPT_URL o APPS_SCRIPT_TOKEN en el servidor" });
     return;
   }
 
@@ -29,6 +30,7 @@ export default async function handler(req, res) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         action: "nueva_venta",
+        token: appsScriptToken,
         cliente: customerName || "",
         orderNum: orderNum || "",
         total: total || 0,

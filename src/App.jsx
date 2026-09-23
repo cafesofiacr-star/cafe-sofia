@@ -6,7 +6,7 @@ import CartView from "./components/CartView.jsx";
 import AdminView from "./components/AdminView.jsx";
 import ChatWidget from "./components/ChatWidget.jsx";
 import Toast from "./components/Toast.jsx";
-import { INVENTORY_INITIAL, RECIPES } from "./data.js";
+import { INVENTORY_INITIAL, RECIPES, MENU } from "./data.js";
 import { CoffeeBranchMotif, SlothMotif, ShieldIcon } from "./icons.jsx";
 
 export default function App() {
@@ -79,6 +79,11 @@ export default function App() {
     }));
 
     const orderNum = Math.floor(1000 + Math.random() * 9000);
+    const orderItems = ids.map((id) => {
+      const item = MENU.find((m) => m.id === id);
+      return { id, name: item.name, price: item.price, qty: cart[id] };
+    });
+    const total = orderItems.reduce((sum, it) => sum + it.price * it.qty, 0);
 
     setInventory(nextInventory);
     if (newLogEntries.length) setLog((l) => [...l, ...newLogEntries]);
@@ -93,6 +98,15 @@ export default function App() {
           ? " Se generaron " + newLogEntries.length + " pedido(s) automático(s) a proveedores."
           : "")
     );
+
+    // Avisa al backend real (Apps Script) a través de la función serverless de
+    // Vercel. No bloquea la experiencia del cliente: si falla, se registra en
+    // consola pero el pedido ya quedó confirmado en pantalla.
+    fetch("/api/confirmar-pedido", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items: orderItems, customerName, total, orderNum })
+    }).catch((err) => console.error("No se pudo avisar al backend:", err));
   }
 
   const cartCount = Object.values(cart).reduce((sum, n) => sum + n, 0);

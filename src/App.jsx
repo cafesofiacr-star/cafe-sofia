@@ -93,16 +93,13 @@ export default function App() {
         customerName +
         ". Pedido #" +
         orderNum +
-        " confirmado, estará listo en unos 8 minutos." +
-        (newLogEntries.length
-          ? " Se generaron " + newLogEntries.length + " pedido(s) automático(s) a proveedores."
-          : "")
+        " registrado. Tu café estará listo apenas confirmemos tu transferencia."
     );
 
-    // Avisa al backend real (Apps Script) a través de la función serverless de
-    // Vercel. No bloquea la experiencia del cliente: si falla, se registra en
-    // consola pero el pedido ya quedó confirmado en pantalla.
-    fetch("/api/confirmar-pedido", {
+    // El pago es por transferencia (SINPE Móvil): el pedido queda PENDIENTE en
+    // el backend, sin descontar stock ni sumar a la caja, hasta que un
+    // administrador confirme el pago desde el panel.
+    fetch("/api/pedido-transferencia", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ items: orderItems, customerName, total, orderNum })

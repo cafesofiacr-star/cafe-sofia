@@ -75,8 +75,13 @@ export default function CartView({ cart, onIncrement, onDecrement, onConfirm, sh
                 <span>Total</span>
                 <span className="mono">{fmt(subtotal)}</span>
               </div>
+              <div className="sinpe-note">
+                <strong>Pago por SINPE Móvil:</strong> transfiere {fmt(subtotal)} al{" "}
+                <span className="mono">8920-0495</span> y luego confirma tu pedido. Tu compra queda
+                pendiente hasta que verifiquemos el pago.
+              </div>
               <button className="confirm-btn" onClick={handleConfirm}>
-                Confirmar pedido
+                Ya transferí, confirmar pedido
               </button>
             </div>
           </>

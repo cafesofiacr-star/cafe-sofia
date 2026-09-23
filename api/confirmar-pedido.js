@@ -20,7 +20,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch(appsScriptUrl, {
+    // Apps Script responde al POST con un 302 hacia una URL temporal que solo
+    // acepta GET. Seguimos la redirección a mano (en vez de dejar que fetch la
+    // siga sola) porque algunos entornos la repiten como POST, y esa URL la
+    // rechaza.
+    let response = await fetch(appsScriptUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -34,8 +38,18 @@ export default async function handler(req, res) {
           precio: it.price,
           cantidad: it.qty
         }))
-      })
+      }),
+      redirect: "manual"
     });
+
+    if (response.status === 302 || response.status === 301) {
+      const location = response.headers.get("location");
+      if (!location) {
+        res.status(502).json({ ok: false, error: "El backend redirigió sin indicar destino" });
+        return;
+      }
+      response = await fetch(location, { method: "GET" });
+    }
 
     const text = await response.text();
     let data;

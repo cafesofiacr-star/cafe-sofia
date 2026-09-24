@@ -3,17 +3,14 @@ import TopBar from "./components/TopBar.jsx";
 import MenuView from "./components/MenuView.jsx";
 import DesafiosView from "./components/DesafiosView.jsx";
 import CartView from "./components/CartView.jsx";
-import AdminView from "./components/AdminView.jsx";
 import ChatWidget from "./components/ChatWidget.jsx";
 import Toast from "./components/Toast.jsx";
-import { INVENTORY_INITIAL, RECIPES, MENU } from "./data.js";
-import { CoffeeBranchMotif, SlothMotif, ShieldIcon } from "./icons.jsx";
+import { MENU } from "./data.js";
+import { CoffeeBranchMotif, SlothMotif } from "./icons.jsx";
 
 export default function App() {
   const [view, setView] = useState("menu");
   const [cart, setCart] = useState({});
-  const [inventory, setInventory] = useState(() => INVENTORY_INITIAL.map((i) => ({ ...i })));
-  const [log, setLog] = useState([]);
   const [toast, setToast] = useState({ message: "", visible: false });
   const toastTimer = useRef(null);
 
@@ -43,40 +40,9 @@ export default function App() {
     setCart((c) => ({ ...c, [id]: Math.max(0, (c[id] || 0) - 1) }));
   }
 
-  function handleUpdateMin(id, value) {
-    setInventory((inv) => inv.map((i) => (i.id === id ? { ...i, min: value } : i)));
-  }
-
   function handleConfirmOrder(customerName) {
     const ids = Object.keys(cart).filter((k) => cart[k] > 0);
     if (ids.length === 0) return;
-
-    let nextInventory = inventory.map((i) => ({ ...i }));
-    const triggered = [];
-
-    ids.forEach((id) => {
-      const qty = cart[id];
-      const recipe = RECIPES[id] || {};
-      Object.keys(recipe).forEach((ingId) => {
-        const inv = nextInventory.find((i) => i.id === ingId);
-        if (!inv) return;
-        const wasAbove = inv.stock >= inv.min;
-        inv.stock = Math.max(0, inv.stock - recipe[ingId] * qty);
-        if (wasAbove && inv.stock < inv.min) triggered.push(inv);
-      });
-    });
-
-    const newLogEntries = triggered.map((inv) => ({
-      ing: inv.name,
-      proveedor: inv.proveedor,
-      date: new Date().toLocaleString("es-CR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      })
-    }));
 
     const orderNum = Math.floor(1000 + Math.random() * 9000);
     const orderItems = ids.map((id) => {
@@ -85,8 +51,6 @@ export default function App() {
     });
     const total = orderItems.reduce((sum, it) => sum + it.price * it.qty, 0);
 
-    setInventory(nextInventory);
-    if (newLogEntries.length) setLog((l) => [...l, ...newLogEntries]);
     setCart({});
     showToast(
       "Gracias, " +
@@ -128,17 +92,10 @@ export default function App() {
               showToast={showToast}
             />
           )}
-          {view === "admin" && (
-            <AdminView inventory={inventory} log={log} onUpdateMin={handleUpdateMin} onNavigate={goto} />
-          )}
         </main>
 
         <footer>
           <span className="fnote">Café SofIA — prototipo navegable · datos de ejemplo</span>
-          <button className="admin-link" onClick={() => goto("admin")}>
-            <ShieldIcon />
-            Acceso Administrador
-          </button>
         </footer>
       </div>
 

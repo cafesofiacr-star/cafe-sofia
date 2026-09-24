@@ -208,6 +208,42 @@ tr:last-child td{ border-bottom:none; }
 .log-item .ld{ font-size:.76rem; color:var(--ink-faint); margin-top:2px; }
 .log-empty{ color:var(--ink-faint); font-size:.88rem; padding:20px 16px; background:var(--surface); border:1px dashed var(--line); border-radius:10px; }
 
+.admin-page{ max-width:1040px; margin:0 auto; padding-block:32px 60px; }
+.admin-login{ max-width:360px; margin:80px auto; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:28px; box-shadow:var(--shadow-md); }
+.admin-login-title{ display:flex; align-items:center; gap:9px; font-weight:600; color:var(--navy-900); margin-bottom:18px; }
+.admin-login-title svg{ width:18px; height:18px; stroke:var(--navy-700); }
+.admin-error{ color:var(--crit); font-size:.85rem; margin-bottom:10px; }
+.admin-notice{ background:var(--good-bg); color:var(--good); padding:8px 14px; border-radius:8px; font-size:.85rem; margin-bottom:16px; }
+
+.admin-tabs{ display:flex; gap:6px; margin-bottom:22px; border-bottom:1px solid var(--line); }
+.admin-tabs button{ background:none; border:none; padding:10px 14px; font-size:.88rem; font-weight:500; color:var(--ink-soft); cursor:pointer; border-bottom:2px solid transparent; }
+.admin-tabs button.active{ color:var(--navy-900); border-bottom-color:var(--navy-900); }
+
+.admin-section-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.mini-btn{
+  display:inline-flex; align-items:center; gap:5px; background:var(--surface); border:1px solid var(--line); color:var(--navy-900);
+  border-radius:7px; padding:6px 11px; font-size:.8rem; font-weight:500; cursor:pointer; margin-right:6px;
+}
+.mini-btn:hover{ background:var(--surface-2); }
+.mini-btn svg{ width:13px; height:13px; stroke:currentColor; }
+.mini-btn.confirm{ background:var(--good-bg); color:var(--good); border-color:transparent; }
+.mini-btn.discard{ background:var(--crit-bg); color:var(--crit); border-color:transparent; }
+
+.admin-form{ background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:18px; margin-bottom:18px; }
+.form-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; }
+.form-grid label{ display:flex; flex-direction:column; gap:5px; font-size:.8rem; color:var(--ink-soft); font-weight:500; }
+.form-grid label.full{ grid-column:1/-1; }
+.form-grid label.checkbox{ flex-direction:row; align-items:center; gap:8px; }
+.form-grid input[type="text"], .form-grid input[type="number"], .form-grid input:not([type]){
+  border:1px solid var(--line); border-radius:7px; padding:8px 10px; background:var(--surface); color:var(--ink); font-size:.87rem;
+}
+.admin-form-actions{ display:flex; gap:8px; margin-top:14px; }
+
+.transfer-item{ justify-content:space-between; }
+.transfer-actions{ display:flex; gap:6px; flex-shrink:0; }
+.stock-add{ display:flex; gap:6px; align-items:center; }
+.stock-add input{ width:80px; border:1px solid var(--line); border-radius:6px; padding:5px 7px; background:var(--surface); color:var(--ink); font-size:.82rem; }
+
 /* ---------- desafíos ---------- */
 .challenge-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:18px; }
 .challenge-card{

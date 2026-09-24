@@ -12,7 +12,7 @@
 - [x] Etapa 6 · El token entre servidores — HITO 2
 - [x] Etapa 7 · Los métodos de pago — solo transferencia (SINPE Móvil); Mercado Pago no opera en Costa Rica
 - [x] Etapa 8 · El panel de administración: la trastienda
-- [ ] Etapa 9 · Usar el panel: carta, insumos, stock y transferencias
+- [x] Etapa 9 · Usar el panel: carta, insumos, stock y transferencias
 - [ ] Etapa 10 · SofIA en modo real
 
 ## Notas de contexto
